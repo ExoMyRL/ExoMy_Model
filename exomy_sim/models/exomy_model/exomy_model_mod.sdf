@@ -1,0 +1,966 @@
+<?xml version="1.0" ?>
+<sdf version='1.7'>
+  <model name='exomy_model'>
+    <link name='base_link'>
+      <inertial>
+        <pose>0.015117 0.002218 0.112925 0 -0 0</pose>
+        <mass>0.604357</mass>
+        <inertia>
+          <ixx>0.00510721</ixx>
+          <ixy>-6.08139e-05</ixy>
+          <ixz>-0.000554872</ixz>
+          <iyy>0.00581766</iyy>
+          <iyz>-0.000165458</iyz>
+          <izz>0.00315245</izz>
+        </inertia>
+      </inertial>
+      <visual name='base_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/base_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__bling_link_visual_1'>
+        <pose>0.08 0.0225 0 1.5708 -0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/bling_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Gold</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__lidar_visual_visual_2'>
+        <pose>0.044 0 0.23 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.03</length>
+            <radius>0.03</radius>
+          </cylinder>
+        </geometry>
+      </visual>
+      <sensor name='lidar' type='ray'>
+        <always_on>1</always_on>
+        <visualize>1</visualize>
+        <update_rate>5</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>6.28</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.12</min>
+            <max>3.5</max>
+            <resolution>0.015</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name='scan' filename='libgazebo_ros_ray_sensor.so'>
+          <ros>
+            <remapping>~/out:=scan</remapping>
+          </ros>
+          <output_type>sensor_msgs/LaserScan</output_type>
+          <frame_name>lidar_link</frame_name>
+        </plugin>
+        <pose>0.044 0 0.23 0 -0 0</pose>
+      </sensor>
+    </link>
+    <joint name='LFB_joint' type='revolute'>
+      <pose relative_to='base_link'>0.055 0.062 0.017 -1.5708 0 0</pose>
+      <parent>base_link</parent>
+      <child>LFB_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.47</lower>
+          <upper>0.47</upper>
+          <effort>1000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='LFB_link'>
+      <pose relative_to='LFB_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-1.6e-05 -0.006283 0.026326 0 -0 0</pose>
+        <mass>0.0924732</mass>
+        <inertia>
+          <ixx>2.29318e-05</ixx>
+          <ixy>4.34816e-09</ixy>
+          <ixz>1.98435e-09</ixz>
+          <iyy>0.000122754</iyy>
+          <iyz>-4.18265e-07</iyz>
+          <izz>0.000113483</izz>
+        </inertia>
+      </inertial>
+      <visual name='LFB_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/LFB_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='STR_LF_joint' type='revolute'>
+      <pose relative_to='LFB_link'>0.08 0.015418 0.041775 1.5708 -0 0</pose>
+      <parent>LFB_link</parent>
+      <child>STR_LF_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='STR_LF_link'>
+      <pose relative_to='STR_LF_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.000225 0.012457 -0.033761 0 -0 0</pose>
+        <mass>0.0711742</mass>
+        <inertia>
+          <ixx>4.10598e-05</ixx>
+          <ixy>8.98028e-09</ixy>
+          <ixz>-1.40355e-07</ixz>
+          <iyy>3.36879e-05</iyy>
+          <iyz>4.73851e-06</iyz>
+          <izz>1.59152e-05</izz>
+        </inertia>
+      </inertial>
+      <visual name='STR_LF_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/STR_LF_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='DRV_LF_joint' type='revolute'>
+      <pose relative_to='STR_LF_link'>0 -0.002386 -0.057244 -1.5708 0 0</pose>
+      <parent>STR_LF_link</parent>
+      <child>DRV_LF_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='DRV_LF_link'>
+      <pose relative_to='DRV_LF_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0 0.000211 -0.007467 0 -0 0</pose>
+        <mass>0.0569726</mass>
+        <inertia>
+          <ixx>5.23057e-05</ixx>
+          <ixy>1.42808e-11</ixy>
+          <ixz>-1.21312e-11</ixz>
+          <iyy>5.21106e-05</iyy>
+          <iyz>6.30118e-08</iyz>
+          <izz>8.04987e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='DRV_LF_link_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.045</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='DRV_LF_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/DRV_LF_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Gold</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='STR_LM_joint' type='revolute'>
+      <pose relative_to='LFB_link'>-0.08 0.015418 0.041775 1.5708 -0 0</pose>
+      <parent>LFB_link</parent>
+      <child>STR_LM_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='STR_LM_link'>
+      <pose relative_to='STR_LM_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.000226 0.012456 -0.033761 0 -0 0</pose>
+        <mass>0.0711731</mass>
+        <inertia>
+          <ixx>4.10633e-05</ixx>
+          <ixy>-8.07921e-09</ixy>
+          <ixz>1.40511e-07</ixz>
+          <iyy>3.36873e-05</iyy>
+          <iyz>4.74136e-06</iyz>
+          <izz>1.59192e-05</izz>
+        </inertia>
+      </inertial>
+      <visual name='STR_LM_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/STR_LM_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='DRV_LM_joint' type='revolute'>
+      <pose relative_to='STR_LM_link'>0 -0.002386 -0.057244 -1.5708 0 0</pose>
+      <parent>STR_LM_link</parent>
+      <child>DRV_LM_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='DRV_LM_link'>
+      <pose relative_to='DRV_LM_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0 0.000211 -0.007467 0 -0 0</pose>
+        <mass>0.0569726</mass>
+        <inertia>
+          <ixx>5.23057e-05</ixx>
+          <ixy>1.42799e-11</ixy>
+          <ixz>-1.25464e-11</ixz>
+          <iyy>5.21106e-05</iyy>
+          <iyz>6.30113e-08</iyz>
+          <izz>8.04987e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='DRV_LM_link_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.045</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='DRV_LM_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/DRV_LM_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Gold</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='MRB_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.082 0 0.017 1.5708 -0 1.5708</pose>
+      <parent>base_link</parent>
+      <child>MRB_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.47</lower>
+          <upper>0.47</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='MRB_link'>
+      <pose relative_to='MRB_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-5e-06 0.005172 -0.053204 0 -0 0</pose>
+        <mass>0.108378</mass>
+        <inertia>
+          <ixx>4.87361e-05</ixx>
+          <ixy>1.48702e-09</ixy>
+          <ixz>1.51142e-08</ixz>
+          <iyy>0.000292228</iyy>
+          <iyz>-2.65262e-07</iyz>
+          <izz>0.000257396</izz>
+        </inertia>
+      </inertial>
+      <visual name='MRB_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/MRB_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='STR_LR_joint' type='revolute'>
+      <pose relative_to='MRB_link'>0.10378 -0.015418 -0.080775 3.14159 -1.57079 1.57079</pose>
+      <parent>MRB_link</parent>
+      <child>STR_LR_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='STR_LR_link'>
+      <pose relative_to='STR_LR_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.012457 0.000225 -0.033761 0 0 -1.5708</pose>
+        <mass>0.0711742</mass>
+        <inertia>
+          <ixx>3.36879e-05</ixx>
+          <ixy>-8.98028e-09</ixy>
+          <ixz>-4.73851e-06</ixz>
+          <iyy>4.10598e-05</iyy>
+          <iyz>-1.40355e-07</iyz>
+          <izz>1.59152e-05</izz>
+        </inertia>
+      </inertial>
+      <visual name='STR_LR_link_visual'>
+        <pose>0 0 0 0 0 -1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/STR_LR_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='DRV_LR_joint' type='revolute'>
+      <pose relative_to='STR_LR_link'>0 -0.002386 -0.057244 -1.5708 0 0</pose>
+      <parent>STR_LR_link</parent>
+      <child>DRV_LR_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='DRV_LR_link'>
+      <pose relative_to='DRV_LR_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0 0.000211 -0.007467 0 -0 0</pose>
+        <mass>0.0569726</mass>
+        <inertia>
+          <ixx>5.23057e-05</ixx>
+          <ixy>1.42808e-11</ixy>
+          <ixz>-1.21312e-11</ixz>
+          <iyy>5.21106e-05</iyy>
+          <iyz>6.30118e-08</iyz>
+          <izz>8.04987e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='DRV_LR_link_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.045</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='DRV_LR_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/DRV_LR_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Gold</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='STR_RR_joint' type='revolute'>
+      <pose relative_to='MRB_link'>-0.10378 -0.015418 -0.080775 3.14159 -1.57079 1.57079</pose>
+      <parent>MRB_link</parent>
+      <child>STR_RR_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='STR_RR_link'>
+      <pose relative_to='STR_RR_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.012456 -0.000226 -0.033761 0 -0 1.5708</pose>
+        <mass>0.0711731</mass>
+        <inertia>
+          <ixx>3.36873e-05</ixx>
+          <ixy>8.07921e-09</ixy>
+          <ixz>-4.74136e-06</ixz>
+          <iyy>4.10633e-05</iyy>
+          <iyz>1.40511e-07</iyz>
+          <izz>1.59192e-05</izz>
+        </inertia>
+      </inertial>
+      <visual name='STR_RR_link_visual'>
+        <pose>0 0 0 0 -0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/STR_RR_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='DRV_RR_joint' type='revolute'>
+      <pose relative_to='STR_RR_link'>0 0.002386 -0.057244 -1.5708 0 0</pose>
+      <parent>STR_RR_link</parent>
+      <child>DRV_RR_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='DRV_RR_link'>
+      <pose relative_to='DRV_RR_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0 0.000211 0.007467 0 -0 0</pose>
+        <mass>0.0569726</mass>
+        <inertia>
+          <ixx>5.23057e-05</ixx>
+          <ixy>1.42808e-11</ixy>
+          <ixz>-1.21312e-11</ixz>
+          <iyy>5.21106e-05</iyy>
+          <iyz>6.30118e-08</iyz>
+          <izz>8.04987e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='DRV_RR_link_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.045</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='DRV_RR_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/DRV_RR_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Gold</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='RFB_joint' type='revolute'>
+      <pose relative_to='base_link'>0.055 -0.062 0.017 -1.5708 0 0</pose>
+      <parent>base_link</parent>
+      <child>RFB_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.47</lower>
+          <upper>0.47</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='RFB_link'>
+      <pose relative_to='RFB_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-8.4e-05 -0.006282 -0.026326 0 -0 0</pose>
+        <mass>0.0924732</mass>
+        <inertia>
+          <ixx>2.29569e-05</ixx>
+          <ixy>1.58188e-06</ixy>
+          <ixz>8.63144e-09</ixz>
+          <iyy>0.000122729</iyy>
+          <iyz>4.18181e-07</iyz>
+          <izz>0.000113483</izz>
+        </inertia>
+      </inertial>
+      <visual name='RFB_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/RFB_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='STR_RF_joint' type='revolute'>
+      <pose relative_to='RFB_link'>0.080235 0.014145 -0.041775 1.5708 -0 -0.015893</pose>
+      <parent>RFB_link</parent>
+      <child>STR_RF_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='STR_RF_link'>
+      <pose relative_to='STR_RF_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.000226 -0.012456 -0.033761 0 -0 0</pose>
+        <mass>0.0711731</mass>
+        <inertia>
+          <ixx>4.10633e-05</ixx>
+          <ixy>-8.08388e-09</ixy>
+          <ixz>-1.40514e-07</ixz>
+          <iyy>3.36873e-05</iyy>
+          <iyz>-4.74136e-06</iyz>
+          <izz>1.59192e-05</izz>
+        </inertia>
+      </inertial>
+      <visual name='STR_RF_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/STR_RF_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='DRV_RF_joint' type='revolute'>
+      <pose relative_to='STR_RF_link'>0 0.002386 -0.057244 -1.5708 0.015893 0</pose>
+      <parent>STR_RF_link</parent>
+      <child>DRV_RF_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='DRV_RF_link'>
+      <pose relative_to='DRV_RF_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>3e-06 0.000211 0.007467 0 -0 0</pose>
+        <mass>0.0569726</mass>
+        <inertia>
+          <ixx>5.23057e-05</ixx>
+          <ixy>-3.11467e-09</ixy>
+          <ixz>-1.01355e-09</ixz>
+          <iyy>5.21107e-05</iyy>
+          <iyz>-6.30036e-08</iyz>
+          <izz>8.04987e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='DRV_RF_link_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.045</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='DRV_RF_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/DRV_RF_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Gold</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='STR_RM_joint' type='revolute'>
+      <pose relative_to='RFB_link'>-0.079745 0.016688 -0.041775 1.5708 -0 -0.015893</pose>
+      <parent>RFB_link</parent>
+      <child>STR_RM_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='STR_RM_link'>
+      <pose relative_to='STR_RM_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>-0.000225 -0.012457 -0.033761 0 -0 0</pose>
+        <mass>0.0711742</mass>
+        <inertia>
+          <ixx>4.10598e-05</ixx>
+          <ixy>8.97623e-09</ixy>
+          <ixz>1.40352e-07</ixz>
+          <iyy>3.36879e-05</iyy>
+          <iyz>-4.73851e-06</iyz>
+          <izz>1.59152e-05</izz>
+        </inertia>
+      </inertial>
+      <visual name='STR_RM_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/STR_RM_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGray</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='DRV_RM_joint' type='revolute'>
+      <pose relative_to='STR_RM_link'>0 0.002386 -0.057244 -1.5708 0.015893 -0</pose>
+      <parent>STR_RM_link</parent>
+      <child>DRV_RM_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <effort>1000</effort>
+          <velocity>1</velocity>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='DRV_RM_link'>
+      <pose relative_to='DRV_RM_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>3e-06 0.000211 0.007467 0 -0 0</pose>
+        <mass>0.0569726</mass>
+        <inertia>
+          <ixx>5.23057e-05</ixx>
+          <ixy>-3.11467e-09</ixy>
+          <ixz>-1.01397e-09</ixz>
+          <iyy>5.21107e-05</iyy>
+          <iyz>-6.3004e-08</iyz>
+          <izz>8.04987e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='DRV_RM_link_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.045</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='DRV_RM_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://exomy_sim/models/exomy_model/meshes/DRV_RM_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Gold</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <static>0</static>
+    <plugin name='rover_gazebo_joint_plugin' filename='librover_gazebo_joint_plugin.so'>
+      <update_rate>100.0</update_rate>
+      <position_pids>
+        <STR>1.0 0.5 0.0</STR>
+        <pupil>0.2 0.2 0.0</pupil>
+      </position_pids>
+      <velocity_pids/>
+    </plugin>
+    <plugin name='p3d_base_controller' filename='libgazebo_ros_p3d.so'>
+      <body_name>base_link</body_name>
+      <frame_name>map</frame_name>
+      <body_tf_name>odom</body_tf_name>
+    </plugin>
+    <plugin name='gazebo_ros_joint_state_publisher' filename='libgazebo_ros_joint_state_publisher.so'>
+      <ros>
+        <remapping>joint_states:=joint_states</remapping>
+      </ros>
+      <update_rate>100.0</update_rate>
+      <joint_name>LFB_joint</joint_name>
+      <joint_name>RFB_joint</joint_name>
+      <joint_name>MRB_joint</joint_name>
+      <joint_name>DRV_LF_joint</joint_name>
+      <joint_name>DRV_RF_joint</joint_name>
+      <joint_name>DRV_LM_joint</joint_name>
+      <joint_name>DRV_RM_joint</joint_name>
+      <joint_name>DRV_LR_joint</joint_name>
+      <joint_name>DRV_RR_joint</joint_name>
+      <joint_name>STR_LF_joint</joint_name>
+      <joint_name>STR_RF_joint</joint_name>
+      <joint_name>STR_LM_joint</joint_name>
+      <joint_name>STR_RM_joint</joint_name>
+      <joint_name>STR_LR_joint</joint_name>
+      <joint_name>STR_RR_joint</joint_name>
+    </plugin>
+  </model>
+</sdf>
