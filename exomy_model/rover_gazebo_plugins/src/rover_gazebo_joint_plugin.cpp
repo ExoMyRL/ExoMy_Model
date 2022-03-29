@@ -7,7 +7,7 @@
 #include <gazebo/physics/physics.hh>
 #include <gazebo_ros/node.hpp>
 
-#include <rclcpp/rclcpp.hpp>
+#include <ros/ros.h>
 
 #include <exomy_sim_msgs/msg/joint_command.hpp>
 #include <exomy_sim_msgs/msg/joint_command_array.hpp>
@@ -32,10 +32,10 @@ namespace gazebo_plugins
         gazebo_ros::Node::SharedPtr ros_node_;
 
         /// Subscriber to joint command arrays
-        rclcpp::Subscription<exomy_sim_msgs::msg::JointCommandArray>::SharedPtr joint_cmd_array_sub_;
+        ros::Subscriber<exomy_sim_msgs::msg::JointCommandArray>::SharedPtr joint_cmd_array_sub_;
 
         /// Subscriber to joint commands
-        rclcpp::Subscription<exomy_sim_msgs::msg::JointCommand>::SharedPtr joint_cmd_sub_;
+        ros::Subscriber<exomy_sim_msgs::msg::JointCommand>::SharedPtr joint_cmd_sub_;
 
         /// Connection to event called at every world iteration.
         gazebo::event::ConnectionPtr update_connection_;
@@ -151,7 +151,7 @@ namespace gazebo_plugins
             
             bool parameter_has_joint = false;
 
-            RCLCPP_DEBUG(impl_->ros_node_->get_logger(), "Position PID parameter: %s, Values: %f %f %f", pid_identifier.c_str(), pid_values.X(), pid_values.Y(), pid_values.Z());
+            ROS_DEBUG(impl_->ros_node_->get_logger(), "Position PID parameter: %s, Values: %f %f %f", pid_identifier.c_str(), pid_values.X(), pid_values.Y(), pid_values.Z());
 
             for (auto const &joint_element : impl_->joint_controller_->GetJoints())
             {
@@ -163,13 +163,13 @@ namespace gazebo_plugins
                     parameter_has_joint = true;
                     impl_->joint_controller_->SetPositionPID(joint_name, gazebo::common::PID(pid_values.X(), pid_values.Y(), pid_values.Z()));
                     impl_->joint_controller_->SetPositionTarget(joint_name, 0.0);
-                    RCLCPP_DEBUG(impl_->ros_node_->get_logger(), "Set position PID on joint: %s to P: %f I: %f D: %f", joint_name.c_str(), pid_values.X(), pid_values.Y(), pid_values.Z());
+                    ROS_DEBUG(impl_->ros_node_->get_logger(), "Set position PID on joint: %s to P: %f I: %f D: %f", joint_name.c_str(), pid_values.X(), pid_values.Y(), pid_values.Z());
                 }
             }
 
             if(!parameter_has_joint)
             {
-                RCLCPP_WARN(impl_->ros_node_->get_logger(), "No joint found for position pid identifier %s. Maybe there is a typo or your config is not up to date.", pid_identifier.c_str());
+                ROS_WARN(impl_->ros_node_->get_logger(), "No joint found for position pid identifier %s. Maybe there is a typo or your config is not up to date.", pid_identifier.c_str());
             }
         }
 
@@ -186,7 +186,7 @@ namespace gazebo_plugins
 
             bool parameter_has_joint = false;
 
-            RCLCPP_DEBUG(impl_->ros_node_->get_logger(), "Velocity PID parameter: %s, Values: %f %f %f", pid_identifier.c_str(), pid_values.X(), pid_values.Y(), pid_values.Z());
+            ROS_DEBUG(impl_->ros_node_->get_logger(), "Velocity PID parameter: %s, Values: %f %f %f", pid_identifier.c_str(), pid_values.X(), pid_values.Y(), pid_values.Z());
 
             for (auto const &joint_element : impl_->joint_controller_->GetJoints())
             {
@@ -198,12 +198,12 @@ namespace gazebo_plugins
                     parameter_has_joint = true;
                     impl_->joint_controller_->SetVelocityPID(joint_name, gazebo::common::PID(pid_values.X(), pid_values.Y(), pid_values.Z()));
                     impl_->joint_controller_->SetVelocityTarget(joint_name, 0.0);
-                    RCLCPP_DEBUG(impl_->ros_node_->get_logger(), "Set velocity PID on joint: %s to P: %f I: %f D: %f", joint_name.c_str(), pid_values.X(), pid_values.Y(), pid_values.Z());
+                    ROS_DEBUG(impl_->ros_node_->get_logger(), "Set velocity PID on joint: %s to P: %f I: %f D: %f", joint_name.c_str(), pid_values.X(), pid_values.Y(), pid_values.Z());
                 }
             }
             if(!parameter_has_joint)
             {
-                RCLCPP_WARN(impl_->ros_node_->get_logger(), "No joint found for velocity pid identifier %s. Maybe there is a typo or your config is not up to date.", pid_identifier.c_str());
+                ROS_WARN(impl_->ros_node_->get_logger(), "No joint found for velocity pid identifier %s. Maybe there is a typo or your config is not up to date.", pid_identifier.c_str());
             }
         }
 
@@ -220,10 +220,11 @@ namespace gazebo_plugins
         impl_->last_update_time_ = _model->GetWorld()->SimTime();
 
         // Subscribe to joint command array topic
-        impl_->joint_cmd_array_sub_ = impl_->ros_node_->create_subscription<exomy_sim_msgs::msg::JointCommandArray>(
-            "joint_cmds", rclcpp::QoS(rclcpp::KeepLast(1)),
-            std::bind(&RoverGazeboJointPluginPrivate::OnJointCmdArray, impl_.get(), std::placeholders::_1));
-
+        impl_->joint_cmd_array_sub_ = impl_->ros_node_->subscribe<exomy_sim_msgs::msg::JointCommandArray>(
+            "joint_cmds", 10, 
+            std::bind(&RoverGazeboJointPluginPrivate::OnJointCmdArray,
+            impl_.get(), std::placeholders::_1));
+    
         // Listen to the update event (broadcast every simulation iteration)
         impl_->update_connection_ = gazebo::event::Events::ConnectWorldUpdateBegin(
             std::bind(&RoverGazeboJointPluginPrivate::OnUpdate, impl_.get(), std::placeholders::_1));
@@ -261,14 +262,14 @@ namespace gazebo_plugins
             {
                 if (!joint_controller_->SetPositionTarget(model_->GetJoint(cmd.name)->GetScopedName(), cmd.value))
                 {
-                    RCLCPP_WARN(ros_node_->get_logger(), "Joint %s from received command was not found in model.", cmd.name.c_str());
+                    ROS_WARN(ros_node_->get_logger(), "Joint %s from received command was not found in model.", cmd.name.c_str());
                 }
             }
             else if (cmd.mode == "VELOCITY")
             {
                 // if (!joint_controller_->SetVelocityTarget(model_->GetJoint(cmd.name)->GetScopedName(), cmd.value))
                 // {
-                //     RCLCPP_WARN(ros_node_->get_logger(), "Joint %s from received command was not found in model.", cmd.name.c_str());
+                //     ROS_WARN(ros_node_->get_logger(), "Joint %s from received command was not found in model.", cmd.name.c_str());
                 // }
                 // This prohibits the wheels from backspinning
                 model_->GetJoint(cmd.name)->SetParam("fmax", 0, 10.0);
@@ -276,7 +277,7 @@ namespace gazebo_plugins
             }
             else
             {
-                RCLCPP_WARN(ros_node_->get_logger(), "Undefined mode in joint command received: %s", cmd.mode.c_str());
+                ROS_WARN(ros_node_->get_logger(), "Undefined mode in joint command received: %s", cmd.mode.c_str());
             }
         }
     }
