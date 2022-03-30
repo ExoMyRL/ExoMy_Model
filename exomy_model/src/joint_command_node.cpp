@@ -3,7 +3,6 @@
 #include <exomy_sim_msgs/msg/joint_command.hpp>
 #include <exomy_sim_msgs/msg/joint_command_array.hpp>
 
-
 const std::list<std::string> drive_joint_names = {"DRV_LF_joint", "DRV_RF_joint", "DRV_LM_joint", "DRV_RM_joint", "DRV_LR_joint", "DRV_RR_joint"};
 const std::list<std::string> steer_joint_names = {"STR_LF_joint", "STR_RF_joint", "STR_LM_joint", "STR_RM_joint", "STR_LR_joint", "STR_RR_joint"};
 ros::Publisher joint_command_pub_;
