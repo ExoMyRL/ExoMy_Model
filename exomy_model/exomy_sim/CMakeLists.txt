@@ -22,14 +22,20 @@ install(DIRECTORY models DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})
 
 # Find dependencies
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(exomy_msgs REQUIRED)
-find_package(exomy_sim_msgs REQUIRED)
-find_package(sensor_msgs REQUIRED)
+##find_package(ament_cmake REQUIRED)
+find_package(catkin REQUIRED)
+find_package(roscpp REQUIRED)
+# find_package(exomy_msgs REQUIRED)
+# find_package(exomy_sim_msgs REQUIRED)
+# find_package(sensor_msgs REQUIRED)
+# find_package(exomy_model)
 
-add_executable(joint_command_node src/joint_command_node.cpp)
-ament_target_dependencies(joint_command_node rclcpp exomy_msgs exomy_sim_msgs)
+catkin_package()
+
+# add_executable(joint_command_node $(find exomy_model)/exomy_sim/src/joint_command_node.cpp)
+add_executable(joint_command_node exomy_sim/src/joint_command_node.cpp)
+target_link_libraries(joint_command_node)
+#ament_target_dependencies(joint_command_node rclcpp exomy_msgs exomy_sim_msgs)
 
 install(TARGETS
   joint_command_node
@@ -37,7 +43,7 @@ install(TARGETS
 )
 
 # Add environment hooks for GAZEBO paths
-ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/${PROJECT_NAME}.sh.in")
-ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/${PROJECT_NAME}.dsv.in")
+# ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/${PROJECT_NAME}.sh.in")
+# ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env-hooks/${PROJECT_NAME}.dsv.in")
 
-ament_package()
+# ament_package()
