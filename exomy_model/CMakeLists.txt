@@ -2,13 +2,14 @@ cmake_minimum_required(VERSION 2.8.3)
 
 project(exomy_model)
 
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg)
 
 catkin_package()
+include_directories(include ${catkin_INCLUDE_DIRS})
 
-find_package(roslaunch)
-#add_executable(joint_command_node $(find exomy_model)/exomy_sim/src/joint_command_node.cpp)
-#target_link_libraries(joint_command_node)
+# find_package(roslaunch)
+add_executable(joint_command_node ~/exomy_ws/src/ExoMy_Model/exomy_model/src/joint_command_node.cpp)
+target_link_libraries(joint_command_node ${catkin_INCLUDE_DIRS})
 
 foreach(dir config launch meshes urdf)
 	install(DIRECTORY ${dir}/
