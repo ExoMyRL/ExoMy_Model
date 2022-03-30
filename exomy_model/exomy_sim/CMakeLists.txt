@@ -33,8 +33,7 @@ find_package(roscpp REQUIRED)
 catkin_package()
 
 # add_executable(joint_command_node $(find exomy_model)/exomy_sim/src/joint_command_node.cpp)
-add_executable(joint_command_node exomy_sim/src/joint_command_node.cpp)
-target_link_libraries(joint_command_node)
+
 #ament_target_dependencies(joint_command_node rclcpp exomy_msgs exomy_sim_msgs)
 
 install(TARGETS
