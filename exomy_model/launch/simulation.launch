@@ -1,27 +1,27 @@
 <launch>
-    <param name="robot_description" textfile="$(find exomy_model)/urdf/exomy_model.urdf" />
+  <param name="robot_description" textfile="$(find exomy_model)/urdf/exomy_model.urdf" />
 
-    <node name="robot" pkg="exomy" type="robot_node.py" respawn="true" output="screen"/>
-    <!--<node name="motors" pkg="exomy" type="motor_node.py" respawn="true" output="screen" />-->
-    <!--<node name="joystick" pkg="exomy" type="joystick_parser_node.py" respawn="true" output="screen" /> -->
+  <node name="robot" pkg="exomy" type="robot_node.py" respawn="true" output="screen"/>
+  <!--<node name="motors" pkg="exomy" type="motor_node.py" respawn="true" output="screen" />-->
+  <!--<node name="joystick" pkg="exomy" type="joystick_parser_node.py" respawn="true" output="screen" /> -->
 
-    <node respawn="true" pkg="joy" type="joy_node" name="joy_node">
-        <param name="coalesce_interval" value="0.05"/>
-    </node>
+  <node respawn="true" pkg="joy" type="joy_node" name="joy_node">
+    <param name="coalesce_interval" value="0.05"/>
+  </node>
 
-    <node name="joint_command_node" pkg="exomy_model" type="joint_command_node" respawn="true" output="screen"/>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
 
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="joint_command_node" pkg="exomy_sim" type="joint_command_node" respawn="true" output="screen"/>
 
-    <!--node name="robot_state_publisher" pkg="exomy_model" type="joint_command_node" respawn="true" output="screen"/-->
+  <!--node name="robot_state_publisher" pkg="exomy_model" type="joint_command_node" respawn="true" output="screen"/-->
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find exomy_model)/urdf.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find exomy_model)/urdf.rviz" />
 
-    <!--include file="$(find exomy_model)/exomy_sim/worlds/mars_yard.world" /-->
+  <!--include file="$(find exomy_model)/exomy_sim/worlds/mars_yard.world" /-->
 
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find exomy_model)/exomy_sim/worlds/mars_yard.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
     <!--arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
@@ -31,8 +31,8 @@
     <arg name="debug" value="false"/>-->
   </include>
 
-    <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_link base_footprint 40" />
+  <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_link base_footprint 40" />
 
-    <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-file $(find exomy_model)/urdf/exomy_model.urdf -urdf -model exomy_model" output="screen" />
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-file $(find exomy_model)/urdf/exomy_model.urdf -urdf -model exomy_model" output="screen" />
 
 </launch>

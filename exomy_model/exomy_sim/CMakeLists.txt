@@ -25,14 +25,16 @@ install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})
 ##find_package(ament_cmake REQUIRED)
 find_package(catkin REQUIRED)
 find_package(roscpp REQUIRED)
-# find_package(exomy_msgs REQUIRED)
-# find_package(exomy_sim_msgs REQUIRED)
-# find_package(sensor_msgs REQUIRED)
 # find_package(exomy_model)
+find_package(exomy_msgs REQUIRED)
+find_package(exomy_sim_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+
 
 catkin_package()
 
-# add_executable(joint_command_node $(find exomy_model)/exomy_sim/src/joint_command_node.cpp)
+add_executable(joint_command_node $(find exomy_model)/exomy_sim/src/joint_command_node.cpp)
+target_link_libraries(joint_command_node ${catkin_INCLUDE_DIRS} exomy)
 
 #ament_target_dependencies(joint_command_node rclcpp exomy_msgs exomy_sim_msgs)
 
