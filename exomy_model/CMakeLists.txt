@@ -3,9 +3,10 @@ cmake_minimum_required(VERSION 2.8.3)
 project(exomy_model)
 
 find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg)
-#find_package(exomy_sim_msgs REQUIRED)
+# find_package(exomy_sim_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(exomy REQUIRED)
+#find_package(exomy_sim REQUIRED)
 catkin_package()
 include_directories(include ${catkin_INCLUDE_DIRS})
 

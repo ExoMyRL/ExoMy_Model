@@ -23,6 +23,7 @@ find_package(gazebo_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 # custom packages
 find_package(exomy_sim_msgs REQUIRED)
+find_package(exomy_msgs REQUIRED)
 
 include_directories(include
   ${gazebo_dev_INCLUDE_DIRS}
